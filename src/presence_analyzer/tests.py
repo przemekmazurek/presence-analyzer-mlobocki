@@ -119,8 +119,46 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         Test if function is grouping by weekdays.
         """
         data = utils.get_data()
-        test = {0: [], 1: [30047], 2: [24465], 3: [23705], 4: [], 5: [], 6: []}
-        self.assertDictEqual(utils.group_by_weekday(data[10]), test)
+        expected = {
+            0: [],
+            1: [30047],
+            2: [24465],
+            3: [23705],
+            4: [],
+            5: [],
+            6: []
+        }
+        self.assertDictEqual(utils.group_by_weekday(data[10]), expected)
+
+    def test_interval(self):
+        """
+        Test interval calculations.
+        """
+        # start_time == 0
+        start_time = datetime.time(0, 0, 0)
+        end_time = datetime.time(1, 10, 20)
+        self.assertEqual(utils.interval(start_time, end_time), 4220)
+
+        # start_time != 0
+        start_time = datetime.time(1, 10, 20)
+        end_time = datetime.time(2, 20, 20)
+        self.assertEqual(utils.interval(start_time, end_time), 4200)
+
+    def test_mean(self):
+        """
+        Test calculations of arithmetic mean.
+        """
+        self.assertEqual(utils.mean([]), 0)
+        self.assertEqual(utils.mean(range(1, 10)), 5.0)
+        self.assertEqual(utils.mean(range(1, 3)), 1.5)
+
+    def test_seconds_since_midnight(self):
+        """
+        Test calculations of seconds.
+        """
+        time = datetime.time(1, 0, 20)
+        seconds = utils.seconds_since_midnight(time)
+        self.assertEqual(seconds, 3620)
 
 
 def suite():
