@@ -126,9 +126,19 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
             3: [23705],
             4: [],
             5: [],
-            6: []
+            6: [],
+        }
+        expected_2 = {
+            0: [24123],
+            1: [16564],
+            2: [25321],
+            3: [22969, 22999],
+            4: [6426],
+            5: [],
+            6: [],
         }
         self.assertDictEqual(utils.group_by_weekday(data[10]), expected)
+        self.assertDictEqual(utils.group_by_weekday(data[11]), expected_2)
 
     def test_interval(self):
         """
@@ -144,6 +154,14 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         end_time = datetime.time(2, 20, 20)
         self.assertEqual(utils.interval(start_time, end_time), 4200)
 
+        start_time = datetime.time(0, 0, 0)
+        end_time = datetime.time(23, 59, 59)
+        self.assertEqual(utils.interval(start_time, end_time), 86399)
+
+        start_time = datetime.time(0, 0, 0)
+        end_time = datetime.time(0, 0, 0)
+        self.assertEqual(utils.interval(start_time, end_time), 0)
+
     def test_mean(self):
         """
         Test calculations of arithmetic mean.
@@ -151,6 +169,8 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertEqual(utils.mean([]), 0)
         self.assertEqual(utils.mean(range(1, 10)), 5.0)
         self.assertEqual(utils.mean(range(1, 3)), 1.5)
+        self.assertIsInstance(utils.mean(range(1, 5)), float)
+        self.assertIsInstance(utils.mean([1]), float)
 
     def test_seconds_since_midnight(self):
         """
@@ -159,6 +179,14 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         time = datetime.time(1, 0, 20)
         seconds = utils.seconds_since_midnight(time)
         self.assertEqual(seconds, 3620)
+
+        time = datetime.time(0, 0, 0)
+        seconds = utils.seconds_since_midnight(time)
+        self.assertEqual(seconds, 0)
+
+        time = datetime.time(23, 59, 59)
+        seconds = utils.seconds_since_midnight(time)
+        self.assertEqual(seconds, 86399)
 
 
 def suite():

@@ -36,7 +36,7 @@ def get_data():
         'user_id': {
             datetime.date(2013, 10, 1): {
                 'start': datetime.time(9, 0, 0),
-                'end' : datetime.time(17, 30, 0),
+                'end': datetime.time(17, 30, 0),
             },
             datetime.date(2013, 10, 2): {
                 'start': datetime.time(8, 30, 0),
