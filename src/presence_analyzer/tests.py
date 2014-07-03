@@ -83,6 +83,22 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         data = json.loads(resp.data)
         self.assertEqual(len(data), 0)
 
+    def test_start_end_view(self):
+        """
+        Test start/end view.
+        """
+        resp = self.client.get('/api/v1/presence_start_end_view/10')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.content_type, 'application/json')
+        data = json.loads(resp.data)
+        self.assertEqual(len(data), 7)
+
+        resp = self.client.get('/api/v1/presence_start_end_view/2')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.content_type, 'application/json')
+        data = json.loads(resp.data)
+        self.assertEqual(len(data), 0)
+
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
     """
@@ -187,6 +203,32 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         time = datetime.time(23, 59, 59)
         seconds = utils.seconds_since_midnight(time)
         self.assertEqual(seconds, 86399)
+
+    def test_start_end_presence(self):
+        """
+        Test calculations of start/end presence.
+        """
+        data = utils.get_data()
+        expected = {
+            0: {'start': [], 'end': []},
+            1: {'start': [34745], 'end': [64792]},
+            2: {'start': [33592], 'end': [58057]},
+            3: {'start': [38926], 'end': [62631]},
+            4: {'start': [], 'end': []},
+            5: {'start': [], 'end': []},
+            6: {'start': [], 'end': []},
+        }
+        expected_2 = {
+            0: {'start': [33134], 'end': [57257]},
+            1: {'start': [33590], 'end': [50154]},
+            2: {'start': [33206], 'end': [58527]},
+            3: {'start': [37116, 34088], 'end': [60085, 57087]},
+            4: {'start': [47816], 'end': [54242]},
+            5: {'start': [], 'end': []},
+            6: {'start': [], 'end': []},
+        }
+        self.assertDictEqual(utils.start_end_presence(data[10]), expected)
+        self.assertDictEqual(utils.start_end_presence(data[11]), expected_2)
 
 
 def suite():
