@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+    <title>Presence analyzer</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content=""/>
+    <meta name="author" content="STX Next sp. z o.o."/>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+
+    <link href="{{ url_for('static', filename='/css/normalize.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='/css/main.css') }}" media="all" rel="stylesheet" type="text/css" />
+
+    <script src="{{ url_for('static', filename='/js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+    {% block script %}
+    {% endblock %}
+</head>
+<body>
+    <div id="main">
+        <div id="header">
+            <h1>Presence analyzer</h1>
+            <ul>
+                <li {% if active_page == 'mainpage' %} id="selected" {% endif %}><a href="{{ url_for('mainpage') }}">Presence by weekday</a></li>
+                <li {% if active_page == 'mean_time_weekday.html' %} id="selected" {% endif %}><a href="{{ url_for('general_view', template='mean_time_weekday.html') }}">Mean time weekday</a></li>
+                <li {% if active_page == 'presence_start_end.html' %} id="selected" {% endif %}><a href="{{ url_for('general_view', template='presence_start_end.html') }}">Presence start end</a></li>
+            </ul>
+        </div>
+        <div id="content">
+        {% block content %}
+        {% endblock %}
+        </div>
+</body>
+</html>
