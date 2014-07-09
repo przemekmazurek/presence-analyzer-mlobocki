@@ -22,13 +22,13 @@
         <div id="header">
             <h1>Presence analyzer</h1>
             <ul>
-                <li {% if active_page == 'mainpage' %} id="selected" {% endif %}><a href="{{ url_for('mainpage') }}">Presence by weekday</a></li>
-                <li {% if active_page == 'mean_time_weekday.html' %} id="selected" {% endif %}><a href="{{ url_for('general_view', template='mean_time_weekday.html') }}">Mean time weekday</a></li>
-                <li {% if active_page == 'presence_start_end.html' %} id="selected" {% endif %}><a href="{{ url_for('general_view', template='presence_start_end.html') }}">Presence start end</a></li>
+                <li><a href="{{ url_for('render_weekday') }}">Presence by weekday</a></li>
+                <li><a href="{{ url_for('render_mean_time') }}">Mean time weekday</a></li>
+                <li><a href="{{ url_for('render_start_end') }}">Presence start end</a></li>
             </ul>
         </div>
         <div id="content">
-        {% block content %}
+        {% block body %}
         {% endblock %}
         </div>
 </body>

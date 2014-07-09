@@ -16,7 +16,6 @@ from presence_analyzer.utils import (
 )
 
 import logging
-import jinja2
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
 
 
@@ -25,15 +24,31 @@ def mainpage():
     """
     Redirects to front page.
     """
-    return redirect(url_for('general_view', template='presence_weekday.html'))
-    #return render_template('presence_weekday.html', active_page='mainpage') 
+    return redirect(url_for('render_weekday'))
 
 
-@app.route('/<template>')
-def general_view(template):
+@app.route('/mean_time_weekday.html')
+def render_mean_time():
     """
+    Renders mean time view.
     """
-    return render_template(template, active_page=template)
+    return render_template('mean_time_weekday.html')
+
+
+@app.route('/presence_start_end.html')
+def render_start_end():
+    """
+    Renders presence start/end.
+    """
+    return render_template('presence_start_end.html')
+
+
+@app.route('/presence_weekday.html')
+def render_weekday():
+    """
+    Renders presence start/end.
+    """
+    return render_template('presence_weekday.html')
 
 
 @app.route('/api/v1/users', methods=['GET'])

@@ -7,7 +7,7 @@ import json
 import datetime
 import unittest
 
-from presence_analyzer import main, views, utils
+from presence_analyzer import main, utils
 
 
 TEST_DATA_CSV = os.path.join(
@@ -98,6 +98,27 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
         self.assertEqual(len(data), 0)
+
+    def test_render_mean_time(self):
+        """
+        Test if template are rendered properly.
+        """
+        resp = self.client.get('/mean_time_weekday.html')
+        self.assertEqual(resp.status_code, 200)
+
+    def test_render_start_end(self):
+        """
+        Test if template are rendered properly.
+        """
+        resp = self.client.get('/presence_start_end.html')
+        self.assertEquals(resp.status_code, 200)
+
+    def test_render_weekday(self):
+        """
+        Test if template are rendered properly.
+        """
+        resp = self.client.get('/presence_weekday.html')
+        self.assertEqual(resp.status_code, 200)
 
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
