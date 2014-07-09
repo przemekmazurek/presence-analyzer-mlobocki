@@ -1,4 +1,5 @@
 {% extends "main.html" %}
+{% set page = 'mean' %}
 {% block script %}
 <script type="text/javascript">
     google.load("visualization", "1", {packages:["corechart"], 'language': 'pl'});
@@ -54,14 +55,4 @@
 {% endblock %}
 {% block body %}
 <h2>Presence mean time by weekday</h2>
-<p>
-    <select id="user_id" style="display: none">
-        <option value="">--</option>
-    </select>
-    <div id="chart_div" style="display: none">
-    </div>
-    <div id="loading">
-        <img src="{{ url_for('static', filename='img/loading.gif') }}" />
-    </div>
-</p>
 {% endblock %}

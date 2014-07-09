@@ -22,14 +22,24 @@
         <div id="header">
             <h1>Presence analyzer</h1>
             <ul>
-                <li><a href="{{ url_for('render_weekday') }}">Presence by weekday</a></li>
-                <li><a href="{{ url_for('render_mean_time') }}">Mean time weekday</a></li>
-                <li><a href="{{ url_for('render_start_end') }}">Presence start end</a></li>
+                <li {% if page == 'weekday' %}id="selected"{% endif %}><a href="{{ url_for('render_weekday') }}">Presence by weekday</a></li>
+                <li {% if page == 'mean' %}id="selected"{% endif %}><a href="{{ url_for('render_mean_time') }}">Mean time weekday</a></li>
+                <li {% if page == 'start_end' %}id="selected"{% endif %}><a href="{{ url_for('render_start_end') }}">Presence start end</a></li>
             </ul>
         </div>
         <div id="content">
         {% block body %}
         {% endblock %}
+        <p>
+            <select id="user_id" style="display: none">
+                <option value="">--</option>
+            </select>
+            <div id="chart_div" style="display: none">
+            </div>
+            <div id="loading">
+                <img src="{{ url_for('static', filename='img/loading.gif') }}" />
+            </div>
+        </p>
         </div>
 </body>
 </html>
