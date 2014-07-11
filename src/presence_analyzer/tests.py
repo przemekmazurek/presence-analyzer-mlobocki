@@ -7,11 +7,16 @@ import json
 import datetime
 import unittest
 
+
 from presence_analyzer import main, utils
 
 
 TEST_DATA_CSV = os.path.join(
     os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_data.csv'
+)
+
+TEST_DATA_XML = os.path.join(
+    os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_data.xml'
 )
 
 
@@ -26,6 +31,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         Before each test, set up a environment.
         """
         main.app.config.update({'DATA_CSV': TEST_DATA_CSV})
+        main.app.config.update({'DATA_XML': TEST_DATA_XML})
         self.client = main.app.test_client()
 
     def tearDown(self):
@@ -50,8 +56,12 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
-        self.assertEqual(len(data), 2)
-        self.assertDictEqual(data[0], {u'user_id': 10, u'name': u'User 10'})
+        #self.assertEqual(len(data), 2)
+        self.assertDictEqual(data[0], {
+            u'user_id': 10,
+            u'name': u'Maciej Z.',
+            u'avatar': 'https://intranet.stxnext.pl:443/api/images/users/10',
+        })
 
     def test_mean_time_weekday_view(self):
         """
@@ -131,6 +141,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         Before each test, set up a environment.
         """
         main.app.config.update({'DATA_CSV': TEST_DATA_CSV})
+        main.app.config.update({'DATA_XML': TEST_DATA_XML})
 
     def tearDown(self):
         """

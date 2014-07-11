@@ -6,6 +6,7 @@ import os
 import sys
 from functools import partial
 
+import urllib2
 import paste.script.command
 import werkzeug.script
 
@@ -111,3 +112,17 @@ def run():
         _serve('stop', dry_run=dry_run)
 
     werkzeug.script.run()
+
+
+def get_xml_file():
+    """
+    Get users XML file.
+    """
+    app = make_app(config=DEPLOY_CFG)
+    xml_url = app.config['XML_URL']  # site
+    xml_path = app.config['XML_USERS']
+    # home/mlobocki/Code/presence-analyzer-mlobocki/runtime/data/users.xml
+    data = urllib2.urlopen(xml_url)
+
+    with open(xml_path, 'w') as filename:
+        filename.write(data.read())

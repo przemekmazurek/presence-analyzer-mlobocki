@@ -20,6 +20,10 @@ body {
     width: 750px;
     height: 750px;
 }
+#avatar_div {
+    width: 105px;
+    height: 105px;
+}
 
 #header ul {
     list-style: none;
