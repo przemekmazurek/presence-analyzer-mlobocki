@@ -118,9 +118,8 @@ def get_xml_file():
     Get users XML file.
     """
     app = make_app(config=DEPLOY_CFG)
-    xml_url = app.config['XML_URL']  # site
+    xml_url = app.config['XML_URL']
     xml_path = app.config['DATA_XML']
-    # home/mlobocki/Code/presence-analyzer-mlobocki/runtime/data/users.xml
     data = urllib2.urlopen(xml_url)
 
     with open(xml_path, 'w') as filename:

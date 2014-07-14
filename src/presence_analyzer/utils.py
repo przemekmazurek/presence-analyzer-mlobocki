@@ -117,8 +117,8 @@ def additional_data():
     filename = app.config['DATA_XML']
     with open(filename, 'r') as xmlfile:
         xml = etree.parse(xmlfile)
-        server = xml.getroot().find('server')
-        users = xml.getroot().find('users')
+    server = xml.getroot().find('server')
+    users = xml.getroot().find('users')
     return [
         {
             'user_id': int(user.get('id')),

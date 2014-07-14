@@ -271,7 +271,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertIsInstance(data[1]['user_id'], int)
         self.assertIsInstance(data[1]['name'], str)
         self.assertIsInstance(data[1]['avatar'], str)
-        self.assertItemsEqual(data[1].keys(), ['user_id', 'name', 'avatar'])
+        self.assertEqual(data[1].keys(), ['user_id', 'name', 'avatar'])
         expected = {
             'user_id': 10,
             'name': 'Maciej Z.',
@@ -291,10 +291,10 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         """
         with open(TEST_DATA_XML, 'r') as xmlfile:
             xml = etree.parse(xmlfile)
-            server = xml.getroot().find('server')
+        server = xml.getroot().find('server')
         data = utils.getting_url(server)
         expected = 'https://intranet.stxnext.pl:443'
-        self.assertItemsEqual(expected, data)
+        self.assertEqual(expected, data)
 
 
 def suite():
