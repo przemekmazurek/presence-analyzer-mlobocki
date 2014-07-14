@@ -4,7 +4,7 @@ Defines views.
 """
 
 import calendar
-from flask import redirect
+from flask import redirect, render_template, url_for
 
 from presence_analyzer.main import app
 from presence_analyzer.utils import (
@@ -24,7 +24,31 @@ def mainpage():
     """
     Redirects to front page.
     """
-    return redirect('/static/presence_weekday.html')
+    return redirect(url_for('render_weekday'))
+
+
+@app.route('/mean_time_weekday.html')
+def render_mean_time():
+    """
+    Renders mean time view.
+    """
+    return render_template('mean_time_weekday.html')
+
+
+@app.route('/presence_start_end.html')
+def render_start_end():
+    """
+    Renders presence start/end.
+    """
+    return render_template('presence_start_end.html')
+
+
+@app.route('/presence_weekday.html')
+def render_weekday():
+    """
+    Renders presence start/end.
+    """
+    return render_template('presence_weekday.html')
 
 
 @app.route('/api/v1/users', methods=['GET'])
@@ -38,6 +62,7 @@ def users_view():
             for i in data.keys()]
 
 
+@app.route('/api/v1/mean_time_weekday/', methods=['GET'])
 @app.route('/api/v1/mean_time_weekday/<int:user_id>', methods=['GET'])
 @jsonify
 def mean_time_weekday_view(user_id):
@@ -56,6 +81,7 @@ def mean_time_weekday_view(user_id):
     return result
 
 
+@app.route('/api/v1/presence_weekday/', methods=['GET'])
 @app.route('/api/v1/presence_weekday/<int:user_id>', methods=['GET'])
 @jsonify
 def presence_weekday_view(user_id):
@@ -75,6 +101,7 @@ def presence_weekday_view(user_id):
     return result
 
 
+@app.route('/api/v1/presence_start_end_view/', methods=['GET'])
 @app.route('/api/v1/presence_start_end_view/<int:user_id>', methods=['GET'])
 @jsonify
 def presence_start_end_view(user_id):

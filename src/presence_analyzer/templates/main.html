@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+    <title>Presence analyzer</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content=""/>
+    <meta name="author" content="STX Next sp. z o.o."/>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0">
+
+    <link href="{{ url_for('static', filename='/css/normalize.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='/css/main.css') }}" media="all" rel="stylesheet" type="text/css" />
+
+    <script src="{{ url_for('static', filename='/js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+    {% block script %}
+    {% endblock %}
+</head>
+<body>
+    <div id="main">
+        <div id="header">
+            <h1>Presence analyzer</h1>
+            <ul>
+                <li {% if page == 'weekday' %}id="selected"{% endif %}><a href="{{ url_for('render_weekday') }}">Presence by weekday</a></li>
+                <li {% if page == 'mean' %}id="selected"{% endif %}><a href="{{ url_for('render_mean_time') }}">Mean time weekday</a></li>
+                <li {% if page == 'start_end' %}id="selected"{% endif %}><a href="{{ url_for('render_start_end') }}">Presence start end</a></li>
+            </ul>
+        </div>
+        <div id="content">
+        {% block body %}
+        {% endblock %}
+        <p>
+            <select id="user_id" style="display: none">
+                <option value="">--</option>
+            </select>
+            <div id="chart_div" style="display: none">
+            </div>
+            <div id="loading">
+                <img src="{{ url_for('static', filename='img/loading.gif') }}" />
+            </div>
+        </p>
+        </div>
+</body>
+</html>
