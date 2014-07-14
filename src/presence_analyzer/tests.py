@@ -271,7 +271,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertIsInstance(data[1]['user_id'], int)
         self.assertIsInstance(data[1]['name'], str)
         self.assertIsInstance(data[1]['avatar'], str)
-        self.assertEqual(data[1].keys(), ['user_id', 'name', 'avatar'])
+        self.assertItemsEqual(data[1].keys(), ['user_id', 'name', 'avatar'])
         expected = {
             'user_id': 10,
             'name': 'Maciej Z.',
