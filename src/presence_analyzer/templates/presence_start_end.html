@@ -15,14 +15,18 @@
                 });
                 dropdown.show();
                 loading.hide();
+                avatar_div.hide();
             });
             $('#user_id').change(function(){
                 var selected_user = $("#user_id").val();
                 var chart_div = $('#chart_div');
+                var avatar_div = $('#avatar_div');
+                var url = "https://intranet.stxnext.pl/api/images/users/"
                 if(selected_user) {
                     loading.show();
                     chart_div.hide();
-
+                    avatar_div.hide();
+                    avatar_div.html('<img src="' + url + selected_user + '"height="101" width="101"/>');
                   $.getJSON("{{ url_for('presence_start_end_view') }}"+selected_user, function(result) {
                         for (var i = 0; i < result.length; i++)
                         {
@@ -49,6 +53,7 @@
                     formatter.format(data, 2);
 
                     chart_div.show();
+                    avatar_div.show();
                     loading.hide();
                     var chart = new google.visualization.Timeline(chart_div[0]);
                     chart.draw(data, options);

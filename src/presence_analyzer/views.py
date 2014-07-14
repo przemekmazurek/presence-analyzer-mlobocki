@@ -10,6 +10,7 @@ from presence_analyzer.main import app
 from presence_analyzer.utils import (
     jsonify,
     get_data,
+    additional_data,
     mean,
     group_by_weekday,
     start_end_presence,
@@ -57,9 +58,8 @@ def users_view():
     """
     Users listing for dropdown.
     """
-    data = get_data()
-    return [{'user_id': i, 'name': 'User {0}'.format(str(i))}
-            for i in data.keys()]
+    data = additional_data()
+    return data
 
 
 @app.route('/api/v1/mean_time_weekday/', methods=['GET'])

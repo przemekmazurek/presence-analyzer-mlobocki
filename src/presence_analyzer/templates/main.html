@@ -34,10 +34,13 @@
             <select id="user_id" style="display: none">
                 <option value="">--</option>
             </select>
+            <div id="avatar_div" style="display: none">
+                <img src="{{ url_for('static', filename='img/loading.gif') }}"/>
+            </div>
             <div id="chart_div" style="display: none">
             </div>
             <div id="loading">
-                <img src="{{ url_for('static', filename='img/loading.gif') }}" />
+                <img src="{{ url_for('static', filename='img/loading.gif') }}"/>
             </div>
         </p>
         </div>

@@ -4,10 +4,10 @@
 
 import os
 import sys
-from functools import partial
-
+import urllib2
 import paste.script.command
 import werkzeug.script
+from functools import partial
 
 etc = partial(os.path.join, 'parts', 'etc')
 
@@ -111,3 +111,16 @@ def run():
         _serve('stop', dry_run=dry_run)
 
     werkzeug.script.run()
+
+
+def get_xml_file():
+    """
+    Get users XML file.
+    """
+    app = make_app(config=DEPLOY_CFG)
+    xml_url = app.config['XML_URL']
+    xml_path = app.config['DATA_XML']
+    data = urllib2.urlopen(xml_url)
+
+    with open(xml_path, 'w') as filename:
+        filename.write(data.read())
