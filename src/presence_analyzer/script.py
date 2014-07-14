@@ -4,11 +4,10 @@
 
 import os
 import sys
-from functools import partial
-
 import urllib2
 import paste.script.command
 import werkzeug.script
+from functools import partial
 
 etc = partial(os.path.join, 'parts', 'etc')
 
@@ -120,7 +119,7 @@ def get_xml_file():
     """
     app = make_app(config=DEPLOY_CFG)
     xml_url = app.config['XML_URL']  # site
-    xml_path = app.config['XML_USERS']
+    xml_path = app.config['DATA_XML']
     # home/mlobocki/Code/presence-analyzer-mlobocki/runtime/data/users.xml
     data = urllib2.urlopen(xml_url)
 

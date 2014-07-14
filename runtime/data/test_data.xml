@@ -13,5 +13,6 @@
         <user id="11">
             <avatar>/api/images/users/11</avatar>
             <name>Maciej D.</name>
+        </user>
     </users>
 </intranet>

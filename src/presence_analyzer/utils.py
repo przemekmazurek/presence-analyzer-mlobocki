@@ -4,17 +4,12 @@ Helper functions used in views.
 """
 
 import csv
-import xml.etree.cElementTree as etree
-import xml.etree.ElementTree as ET
+from lxml import etree
 from json import dumps
 from functools import wraps
 from datetime import datetime
-from script import get_xml_file
-
 from flask import Response
-
 from presence_analyzer.main import app
-
 import logging
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
 
@@ -115,36 +110,32 @@ def start_end_presence(items):
     return result
 
 
-def getting_url():
-    """
-    Getting url from XML file.
-    """
-    url = app.config['XML_USERS']
-    with open(url, 'r') as xml_url:
-        xml = ET.parse(xml_url)
-        intranet = xml.getroot()
-        server = intranet.find('server')
-        server_url = '{0}://{1}:{2}'.format(
-            server.find('protocol').text,
-            server.find('host').text,
-            server.find('port').text,
-        )
-    return server_url
-
-
 def additional_data():
     """
     Additional data information.
     """
-    get_xml_file()  # updating XML file.
-    filename = app.config['XML_USERS']
+    filename = app.config['DATA_XML']
     with open(filename, 'r') as xmlfile:
-        users = etree.parse(xmlfile).find('users')
+        xml = etree.parse(xmlfile)
+        server = xml.getroot().find('server')
+        users = xml.getroot().find('users')
     return [
         {
             'user_id': int(user.get('id')),
             'name': user.find('name').text,
-            'avatar': getting_url() + user.find('avatar').text,
+            'avatar': getting_url(server) + user.find('avatar').text,
         }
         for user in users
     ]
+
+
+def getting_url(server):
+    """
+    Getting url from XML file.
+    """
+    server_url = '{0}://{1}:{2}'.format(
+        server.find('protocol').text,
+        server.find('host').text,
+        server.find('port').text,
+    )
+    return server_url

@@ -6,8 +6,7 @@ import os.path
 import json
 import datetime
 import unittest
-
-
+from lxml import etree
 from presence_analyzer import main, utils
 
 
@@ -56,7 +55,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
-        #self.assertEqual(len(data), 2)
+        self.assertEqual(len(data), 2)
         self.assertDictEqual(data[0], {
             u'user_id': 10,
             u'name': u'Maciej Z.',
@@ -261,6 +260,41 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         }
         self.assertDictEqual(utils.start_end_presence(data[10]), expected)
         self.assertDictEqual(utils.start_end_presence(data[11]), expected_2)
+
+    def test_additional_data(self):
+        """
+        Test addidional_data function.
+        """
+        data = utils.additional_data()
+        self.assertIsInstance(data, list)
+        self.assertIsInstance(data[1], dict)
+        self.assertIsInstance(data[1]['user_id'], int)
+        self.assertIsInstance(data[1]['name'], str)
+        self.assertIsInstance(data[1]['avatar'], str)
+        self.assertItemsEqual(data[1].keys(), ['user_id', 'name', 'avatar'])
+        expected = {
+            'user_id': 10,
+            'name': 'Maciej Z.',
+            'avatar': 'https://intranet.stxnext.pl:443/api/images/users/10',
+        }
+        expected_2 = {
+            'user_id': 11,
+            'name': 'Maciej D.',
+            'avatar': 'https://intranet.stxnext.pl:443/api/images/users/11',
+        }
+        self.assertDictEqual(utils.additional_data()[0], expected)
+        self.assertDictEqual(utils.additional_data()[1], expected_2)
+
+    def test_getting_url(self):
+        """
+        Test getting url function.
+        """
+        with open(TEST_DATA_XML, 'r') as xmlfile:
+            xml = etree.parse(xmlfile)
+            server = xml.getroot().find('server')
+        data = utils.getting_url(server)
+        expected = 'https://intranet.stxnext.pl:443'
+        self.assertItemsEqual(expected, data)
 
 
 def suite():
