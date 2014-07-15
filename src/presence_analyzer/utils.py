@@ -46,7 +46,7 @@ def cache(timeout):
             """
             Inner function of cache.
             """
-            #global CACHE
+            global CACHE
             index = "%s_%s" % ('cache', function.__name__)
             TS = time.time()
             with LOCK:
