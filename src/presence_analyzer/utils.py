@@ -4,6 +4,8 @@ Helper functions used in views.
 """
 
 import csv
+import time
+from threading import Lock
 from lxml import etree
 from json import dumps
 from functools import wraps
@@ -20,11 +22,42 @@ def jsonify(function):
     """
     @wraps(function)
     def inner(*args, **kwargs):
+        """
+        Inner function of jsonify.
+        """
         return Response(dumps(function(*args, **kwargs)),
                         mimetype='application/json')
     return inner
 
 
+def cache(timeout):
+    """
+    Caches data.
+    """
+    def decorator(function):
+        """
+        Decorator function.
+        """
+        time_stamp = {}
+        cache = {}
+        lock = Lock()
+
+        def inner(*args, **kwargs):
+            """
+            Inner function of cache.
+            """
+            key = hash(repr(args) + repr(kwargs))
+            ts = time.time()
+            with lock:
+                if key not in cache or ts - time_stamp[key] >= timeout:
+                    time_stamp[key] = ts
+                    cache[key] = function(*args, **kwargs)
+            return cache[key]
+        return inner
+    return decorator
+
+
+@cache(600)
 def get_data():
     """
     Extracts presence data from CSV file and groups it by user_id.

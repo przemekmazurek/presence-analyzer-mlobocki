@@ -296,6 +296,18 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         expected = 'https://intranet.stxnext.pl:443'
         self.assertEqual(expected, data)
 
+    def test_cache(self):
+        """
+        Test cache.
+        """
+        utils.CACHE = {}
+        data1 = utils.get_data()
+        data2 = {}
+        self.assertNotEqual(data1, data2)
+        data2 = utils.get_data()
+        self.assertEqual(data1, data2)
+        self.assertIsInstance(data1, dict)
+
 
 def suite():
     """
