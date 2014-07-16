@@ -15,9 +15,9 @@ from presence_analyzer.main import app
 import logging
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
 
-TIME_STAMPS = {}
-CACHE = {}
-LOCK = Lock()
+#TIME_STAMPS = {}
+#CACHE = {}
+#LOCK = Lock()
 
 
 def jsonify(function):
@@ -42,21 +42,21 @@ def cache(timeout):
         """
         Decorator function.
         """
+        time_stamp = {}
+        cache = {}
+        lock = Lock()
+
         def inner(*args, **kwargs):
             """
             Inner function of cache.
             """
-            global CACHE
-            index = "%s_%s" % ('cache', function.__name__)
-            TS = time.time()
-            with LOCK:
-                if index not in CACHE or TS - TIME_STAMPS[index] >= timeout:
-                    TIME_STAMPS[index] = TS
-                    CACHE[index] = function(*args, **kwargs)
-                    result = CACHE[index]
-                else:
-                    result = CACHE[index]
-            return result
+            key = hash(repr(args) + repr(kwargs))
+            ts = time.time()
+            with lock:
+                if key not in cache or ts - time_stamp[key] >= timeout:
+                    time_stamp[key] = ts
+                    cache[key] = function(*args, **kwargs)
+            return cache[key]
         return inner
     return decorator
 
