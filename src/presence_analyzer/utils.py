@@ -15,10 +15,6 @@ from presence_analyzer.main import app
 import logging
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
 
-#TIME_STAMPS = {}
-#CACHE = {}
-#LOCK = Lock()
-
 
 def jsonify(function):
     """
